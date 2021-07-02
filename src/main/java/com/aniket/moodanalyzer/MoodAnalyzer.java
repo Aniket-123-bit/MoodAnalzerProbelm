@@ -1,10 +1,11 @@
 /**
- * Purpose : Given a message, ability to analyse and respond HAPPY or SAD mood
- * Design : Refractor the code with default and parameterized constructor to accept message
- *          analyseMood() will change to support no parameters and use message field defined for the Class
+ Purpose : Inform user if the entered message is an invalid mood
+ * Design : In case of NULL or Empty mood, throw the customized exception
+ *          Use enum to differentiate the mood analysis errors
  *
  * @parameter : message
- * @return : HAPPY or SAD
+ * @return : HAPPY or SAD or customized exception message
+ *
  *
  *
  * @author: ANIKET RAIKWAR
@@ -24,15 +25,19 @@ public class MoodAnalyzer {
         this.message = message;
     }
 
-    //Handle NULLPOINTER Exception using try-catch block
-    public String analyseMood() {
+    //Handle Customized Exception using try-catch block
+    public String analyseMood() throws MoodAnalysisException {
         try {
+            if (message.length() == 0)
+                throw new MoodAnalysisException(MoodAnalysisException.ExceptionType.ENTERED_EMPTY
+                        , "Please enter proper message!");
             if (message.contains("sad"))
                 return "SAD";
             else
                 return "HAPPY";
-        } catch(Exception e) {
-            return "HAPPY";
+        } catch(NullPointerException e) {
+            throw new MoodAnalysisException(MoodAnalysisException.ExceptionType.ENTERED_NULL ,
+                    "Please enter proper message!");
         }
     }
 
